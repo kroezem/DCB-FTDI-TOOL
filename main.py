@@ -18,7 +18,12 @@ if __name__ == "__main__":
             while True:
                 line('FTDI TOOL')
                 ftdi.update()
-                modes = ["GPIO", "JTAG", 'UART', 'I2C']
+                modes = [
+                    "GPIO",
+                    'UART',
+                    # 'JTAG',
+                    'I2C'
+                ]
                 mode = choose('TYPE NUMBER OR MODE', modes)
                 match mode:
                     case "GPIO":
@@ -46,4 +51,3 @@ if __name__ == "__main__":
         # except Exception as e:
         #     print(e)
         #     input("Press " + blue("Enter") + " to Retry\n")
-

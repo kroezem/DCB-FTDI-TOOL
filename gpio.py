@@ -16,7 +16,7 @@ def mode(ftdi):
                 "write",
                 "fpga_version",
                 "platform_pwr_cycle",
-                "jtag_clk",
+                # "jtag_clk",
                 # "all_IO_help",
             ]
 
