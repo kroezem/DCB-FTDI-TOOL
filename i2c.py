@@ -6,7 +6,7 @@ def mode(ftdi):
     print("Press", red("CTRL-C"), "to exit\n")
 
     try:
-        address = hex_in('Port Address: ')
+        address = hex_in('Port Address (hex): 0x')
         slave = ftdi.i2c.get_port(address[0])
 
         while True:
@@ -14,16 +14,16 @@ def mode(ftdi):
             command = choose('\nTYPE NUMBER OR COMMAND', commands)
             match command:
                 case 'READ':
-                    offset = hex_in('Address Offset: ')
+                    offset = hex_in('Address Offset (hex): 0x')
 
-                    length = int_in('Read Length: ')
+                    length = int_in('Read Length (int): ')
 
-                    print(slave.read_from(offset[0], length))
+                    print('\n', green('>>'), slave.read_from(offset[0], length))
 
                 case 'WRITE':
-                    offset = hex_in('Address Offset: ')
+                    offset = hex_in('Address Offset (hex): 0x')
 
-                    data = hex_in('Data: ')
+                    data = hex_in('Data (hex): 0x')
 
                     slave.write_to(offset[0], data)
 

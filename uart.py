@@ -2,20 +2,29 @@ import time
 from utilities import url, green, line, red
 import threading
 
+cursor = False
+
 
 def read_from_port(serial_port, running):
+    global cursor
     while running.is_set():
         data = serial_port.read(1024)
         if data:
             print("\n", red("<<"), data.decode('utf-8'), flush=True)
-            print("\n", green(">>"))
+            print("\n", green(">> "), end='')
+            cursor = True
 
 
 def write_to_port(serial_port, running):
+    global cursor
     while running.is_set():
         try:
             time.sleep(.5)
+            if not cursor:
+                print("\n", green(">> "), end='')
+                cursor = True
             user_input = input()
+            cursor = False
             if user_input:
                 serial_port.write(user_input.encode('utf-8') + b'\n')
         except EOFError:
@@ -24,11 +33,12 @@ def write_to_port(serial_port, running):
 
 
 def mode(ftdi):
+    global cursor
     line('UART MINITERM')
     ftdi.pins['SOC_PWR'].set_value(1)
     ftdi.pins['FTDI_RDY_N'].set_value(0)
     ftdi.write()
-
+    cursor = False
     ftdi.uart.timeout = 0  # Non-blocking read
     running = threading.Event()
     running.set()  # Set the running event to signal that threads should run
@@ -45,7 +55,6 @@ def mode(ftdi):
 
     try:
         print("Press", red("CTRL-C"), "to exit")
-        print(green(">>"))
         while True:
             time.sleep(0.1)  # Small delay to prevent high CPU usage
 
