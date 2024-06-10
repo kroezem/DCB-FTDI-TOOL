@@ -5,6 +5,7 @@ import jtag
 from ftdi import Ftdi
 from utilities import choose, hex_in, clear, yellow, red, line, blue, green, plain, bits
 from pyftdi.ftdi import FtdiError
+from pyftdi.usbtools import UsbToolsError
 from sys import exit
 import uart
 
@@ -43,11 +44,26 @@ if __name__ == "__main__":
 
         except FtdiError as e:
             ftdi.close()
-            print(red("FAILED TO CONNECT"))
+            print(red("CONNECTION LOST"))
             input("Press " + blue("Enter") + " to Retry")
+
+        except (UsbToolsError, ValueError) as e:
+            print(red("USB ERROR - DEVICE NOT CONNECTED OR FTDI DRIVERS NOT INSTALLED"))
+
+            print("Type", blue("\"help\""), "for driver install instructions or", red("Enter"), "to retry.")
+            if input(green(">>")).upper() == "HELP":
+                print("\nInstall", green("D2XX"), "and", green("VCP Drivers"), "->",
+                      blue("https://ftdichip.com/wp-content/uploads/2021/08/CDM212364_Setup.zip"))
+                print("\nDownload and open", green("Zadig"), "->",
+                      blue("https://github.com/pbatard/libwdi/releases/download/v1.5.0/zadig-2.8.exe"))
+                print("\nClick", green("options,"), "check", green("List all Devices"), "and uncheck",
+                      green("Ignore Hubs or Composite Parents"))
+                print("Select", green("USB <-> Serial Converter (Composite Parent)"))
+                print("Select", green("libusb-win32"), red("(not WinUSB)"), " in the driver list")
+                print("Click", green("Replace Driver"))
+                print("\nMore info ->", blue("https://eblot.github.io/pyftdi/installation.html#windows"))
+                input("\nPress " + red("Enter") + " to quit")
+                exit(2)
+
         except KeyboardInterrupt:
             exit(2)
-        #
-        # except Exception as e:
-        #     print(e)
-        #     input("Press " + blue("Enter") + " to Retry\n")

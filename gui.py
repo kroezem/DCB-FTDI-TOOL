@@ -9,8 +9,9 @@ from pyftdi.i2c import I2cController
 from pyftdi.gpio import GpioAsyncController
 from pyftdi.gpio import GpioMpsseController
 
-
 # --proxy="http://proxy-chain.intel.com:911"
+
+""" THIS IS A DISCARDED VERSION THAT HAD ARROW KEY NAVIGATION, NO LONGER WORKS  """
 
 
 def pin_defaults():

@@ -56,7 +56,7 @@ def choose(prompt, options, values=None):
     options = [plain(option).upper().strip() for option in options]
     numbers = [plain(number).upper().strip() for number in numbers]
     while True:
-        chosen = input().strip().upper()
+        chosen = input(green(">>")).strip().upper()
 
         if chosen == 'Z' or chosen == 'BACK':
             return None
