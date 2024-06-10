@@ -7,14 +7,15 @@ def read_from_port(serial_port, running):
     while running.is_set():
         data = serial_port.read(1024)
         if data:
-            print(data.decode('utf-8'), flush=True)
+            print("\n", red("<<"), data.decode('utf-8'), flush=True)
+            print("\n", green(">>"))
 
 
 def write_to_port(serial_port, running):
     while running.is_set():
         try:
             time.sleep(.5)
-            user_input = input(green('>> '))
+            user_input = input()
             if user_input:
                 serial_port.write(user_input.encode('utf-8') + b'\n')
         except EOFError:
@@ -44,6 +45,7 @@ def mode(ftdi):
 
     try:
         print("Press", red("CTRL-C"), "to exit")
+        print(green(">>"))
         while True:
             time.sleep(0.1)  # Small delay to prevent high CPU usage
 
