@@ -45,7 +45,8 @@ if __name__ == "__main__":
         except FtdiError as e:
             ftdi.close()
             print(red("FAILED TO CONNECT"))
-            input("Press " + blue("Enter") + " to Retry")
+            if input("Press " + blue("Enter") + " to Retry, or " + blue("e") + " to read error.") == 'e':
+                print(e)
 
         except (UsbToolsError, ValueError) as e:
             print(red("USB ERROR - DEVICE NOT CONNECTED OR FTDI DRIVERS NOT INSTALLED"))
